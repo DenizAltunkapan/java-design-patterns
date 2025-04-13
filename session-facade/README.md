@@ -6,12 +6,6 @@ category: Structural
 language: en
 tag:
   - Abstraction
-  - API design
-  - Code simplification
-  - Decoupling
-  - Encapsulation
-  - Gang Of Four
-  - Interface
 ---
 
 ## Also known as
@@ -33,6 +27,10 @@ Real-world example
 In plain words
 
 > The Session Facade design pattern is an excellent choice for decoupling complex components of the system that need to be interacting frequently. 
+
+Sequence diagram
+
+![Session Facade sequence diagram](./etc/session-facade-sequence-diagram.png)
 
 ## Programmatic Example of Session Facade Pattern in Java
 

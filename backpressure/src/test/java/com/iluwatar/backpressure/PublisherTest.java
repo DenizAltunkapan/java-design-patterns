@@ -22,23 +22,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.iluwatar.bloc;
+package com.iluwatar.backpressure;
 
+import static com.iluwatar.backpressure.Publisher.publish;
+
+import java.time.Duration;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
-import static org.mockito.Mockito.mockStatic;
-
-
-class MainTest {
+public class PublisherTest {
 
   @Test
-  void testMain() {
-    try (var mockedBlocUi = mockStatic(BlocUi.class)) {
-      // Call the main method
-      Main.main(new String[]{});
+  public void testPublish() {
 
-      // Verify that createAndShowUi was called
-      mockedBlocUi.verify(() -> new BlocUi().createAndShowUi());
-    }
+    Flux<Integer> flux = publish(1, 3, 200);
+
+    StepVerifier.withVirtualTime(() -> flux)
+        .expectSubscription()
+        .expectNoEvent(Duration.ofMillis(200))
+        .expectNext(1)
+        .expectNoEvent(Duration.ofSeconds(200))
+        .expectNext(2)
+        .expectNoEvent(Duration.ofSeconds(200))
+        .expectNext(3)
+        .verifyComplete();
   }
 }

@@ -24,16 +24,15 @@
  */
 package com.iluwatar.bloc;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-
-public class BlocUiTest {
+class BlocUiTest {
 
   private JFrame frame;
   private JLabel counterLabel;
@@ -43,9 +42,9 @@ public class BlocUiTest {
   private Bloc bloc;
   private StateListener<State> stateListener;
 
-  @Before
-  public void setUp() {
-    bloc = new Bloc();  // Re-initialize the Bloc for each test
+  @BeforeEach
+  void setUp() {
+    bloc = new Bloc(); // Re-initialize the Bloc for each test
 
     frame = new JFrame("BloC example");
     frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -69,40 +68,40 @@ public class BlocUiTest {
 
     incrementButton.addActionListener(e -> bloc.increment());
     decrementButton.addActionListener(e -> bloc.decrement());
-    toggleListenerButton.addActionListener(e -> {
-      if (bloc.getListeners().contains(stateListener)) {
-        bloc.removeListener(stateListener);
-        toggleListenerButton.setText("Enable Listener");
-      } else {
-        bloc.addListener(stateListener);
-        toggleListenerButton.setText("Disable Listener");
-      }
-    });
+    toggleListenerButton.addActionListener(
+        e -> {
+          if (bloc.getListeners().contains(stateListener)) {
+            bloc.removeListener(stateListener);
+            toggleListenerButton.setText("Enable Listener");
+          } else {
+            bloc.addListener(stateListener);
+            toggleListenerButton.setText("Disable Listener");
+          }
+        });
 
     frame.setVisible(true);
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     frame.dispose();
-    bloc = new Bloc();  // Reset Bloc state after each test to avoid state carryover
+    bloc = new Bloc(); // Reset Bloc state after each test to avoid state carryover
   }
 
-
   @Test
-  public void testIncrementButton() {
+  void testIncrementButton() {
     simulateButtonClick(incrementButton);
     assertEquals("Counter: 1", counterLabel.getText());
   }
 
   @Test
-  public void testDecrementButton() {
+  void testDecrementButton() {
     simulateButtonClick(decrementButton);
     assertEquals("Counter: -1", counterLabel.getText());
   }
 
   @Test
-  public void testToggleListenerButton() {
+  void testToggleListenerButton() {
     // Disable listener
     simulateButtonClick(toggleListenerButton);
     simulateButtonClick(incrementButton);
